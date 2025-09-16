@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom"; 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import coffeeBg from "../assets/coffee-bg.jpg";
@@ -14,10 +15,10 @@ import seasonalImage from "../assets/seasonal.jpg";
 import giftCardsImage from "../assets/gift-cards.jpg";
 
 const Services = () => {
+  const navigate = useNavigate();
   const [selectedService, setSelectedService] = useState(null);
   const [bookedServices, setBookedServices] = useState([]);
 
-  // Separate services into bookable and non-bookable
   const bookableServices = [
     { 
       id: 1, 
@@ -204,22 +205,9 @@ const Services = () => {
     }
   ];
 
-  const closeDetails = () => {
-    setSelectedService(null);
-  };
+  const isServiceBooked = (serviceId) => bookedServices.includes(serviceId);
 
-  const handleBookService = (serviceId) => {
-    if (!bookedServices.includes(serviceId)) {
-      setBookedServices([...bookedServices, serviceId]);
-    }
-    closeDetails();
-  };
-
-  const isServiceBooked = (serviceId) => {
-    return bookedServices.includes(serviceId);
-  };
-
-  const renderServiceCard = (service, isBookable) => {
+  const renderServiceCard = (service) => {
     return (
       <div 
         key={service.id} 
@@ -250,6 +238,13 @@ const Services = () => {
     );
   };
 
+  const handleBookServiceClick = (serviceId) => {
+    if (!bookedServices.includes(serviceId)) {
+      setBookedServices([...bookedServices, serviceId]);
+    }
+    navigate(`/book-service/${serviceId}`);
+  };
+
   return (
     <div className="min-h-screen font-sans flex flex-col">
       <Header />
@@ -264,15 +259,16 @@ const Services = () => {
           <div className="absolute inset-0 bg-black bg-opacity-30"></div>
         </div>
         
-        <div className="relative py-12 px-6 sm:px-10">
+        {/* Increased top padding here */}
+        <div className="relative pt-28 pb-12 px-6 sm:px-10">
           <div className="max-w-7xl mx-auto">
-            {/* Service Details Overlay */}
+            
             {selectedService && (
               <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
                 <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
                   <div className="relative">
                     <button 
-                      onClick={closeDetails}
+                      onClick={() => setSelectedService(null)}
                       className="absolute top-4 right-4 bg-[#8a4b27] text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-[#6e3a1f] transition-colors"
                     >
                       &times;
@@ -294,7 +290,7 @@ const Services = () => {
                         </div>
                         {bookableServices.some(s => s.id === selectedService.id) ? (
                           <button 
-                            onClick={() => handleBookService(selectedService.id)}
+                            onClick={() => handleBookServiceClick(selectedService.id)}
                             className={`w-full py-3 rounded-lg uppercase font-medium tracking-wider transition-colors ${
                               isServiceBooked(selectedService.id)
                                 ? "bg-green-600 text-white hover:bg-green-700"
@@ -343,23 +339,21 @@ const Services = () => {
             </div>
             
             <div className="flex flex-col lg:flex-row gap-8">
-              {/* Bookable Services Column */}
               <div className="lg:w-1/2">
                 <h2 className="text-2xl font-bold text-white mb-6 pb-2 border-b border-amber-500">
                   Bookable Services
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {bookableServices.map(service => renderServiceCard(service, true))}
+                  {bookableServices.map(service => renderServiceCard(service))}
                 </div>
               </div>
               
-              {/* Non-Bookable Services Column */}
               <div className="lg:w-1/2">
                 <h2 className="text-2xl font-bold text-white mb-6 pb-2 border-b border-amber-500">
                   Additional Services
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {nonBookableServices.map(service => renderServiceCard(service, false))}
+                  {nonBookableServices.map(service => renderServiceCard(service))}
                 </div>
               </div>
             </div>
@@ -373,9 +367,11 @@ const Services = () => {
                     From the moment you walk in, you'll notice the difference in our service, 
                     quality, and atmosphere.
                   </p>
-                  <button className="bg-[#8a4b27] text-white px-6 py-3 rounded-lg hover:bg-[#6e3a1f] transition-colors uppercase font-medium tracking-wider">
-                    Book a Table
-                  </button>
+                  <Link to="/book-table">
+                    <button className="bg-[#8a4b27] text-white px-6 py-3 rounded-lg hover:bg-[#6e3a1f] transition-colors uppercase font-medium tracking-wider">
+                      Book a Table
+                    </button>
+                  </Link>
                 </div>
                 <div className="md:w-1/2 bg-amber-50 p-6 rounded-lg border border-amber-100">
                   <h3 className="text-xl font-bold text-[#4a2600] mb-3">Service Hours</h3>
@@ -396,6 +392,7 @@ const Services = () => {
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </main>

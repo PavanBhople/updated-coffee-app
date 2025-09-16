@@ -8,5 +8,8 @@
   color: transparent;
 }
 
+.bg-opacity-10,.bg-opacity-20  {
+    --tw-bg-opacity: 0;
+}
 
 

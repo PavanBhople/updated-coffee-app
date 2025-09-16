@@ -46,9 +46,7 @@ const Header = ({ cartItemCount, onCartClick, isAuthenticated = false }) => {
             animate="visible"
             variants={{
               hidden: {},
-              visible: {
-                transition: { staggerChildren: 0.08 }
-              }
+              visible: { transition: { staggerChildren: 0.08 } },
             }}
             className="flex gap-6 sm:gap-8 text-sm sm:text-base font-medium"
           >
@@ -61,7 +59,7 @@ const Header = ({ cartItemCount, onCartClick, isAuthenticated = false }) => {
               >
                 <Link
                   to={link.to}
-                  className="hover:text-amber-200 transition-colors duration-200 px-2 py-1 rounded relative"
+                  className="hover:text-amber-200 transition-colors duration-200 px-2 py-1 rounded relative group"
                 >
                   <span className="relative z-10">{link.label}</span>
                   <motion.div
@@ -75,12 +73,12 @@ const Header = ({ cartItemCount, onCartClick, isAuthenticated = false }) => {
           </motion.ul>
         </nav>
 
-        {/* Cart and User Buttons */}
+        {/* Cart and User */}
         <motion.div
           initial={{ x: 40, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.5 }}
-          className="flex items-center gap-4"
+          className="flex items-center gap-4 relative"
         >
           {/* Cart Icon */}
           <motion.button
@@ -88,6 +86,7 @@ const Header = ({ cartItemCount, onCartClick, isAuthenticated = false }) => {
             transition={{ type: "spring", stiffness: 300 }}
             onClick={onCartClick}
             className="relative p-2 rounded-full hover:bg-[#6e3a1f] transition-colors duration-300"
+            aria-label="Shopping cart"
           >
             <FiShoppingCart className="h-5 w-5" />
             {cartItemCount > 0 && (
@@ -102,8 +101,8 @@ const Header = ({ cartItemCount, onCartClick, isAuthenticated = false }) => {
             )}
           </motion.button>
 
-          {/* User Profile Icon - Only shown when authenticated */}
-          {isAuthenticated && (
+          {/* User Profile Icon or Login Button */}
+          {isAuthenticated ? (
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -117,52 +116,14 @@ const Header = ({ cartItemCount, onCartClick, isAuthenticated = false }) => {
                 <FiUser className="h-5 w-5" />
               </Link>
             </motion.div>
+          ) : (
+            <Link
+              to="/login"
+              className="bg-[#8a4b27] px-4 sm:px-6 py-2 rounded-full shadow-md font-medium hover:bg-[#6e3a1f] transition-colors duration-300 text-sm sm:text-base flex items-center gap-2"
+            >
+              LOGIN
+            </Link>
           )}
-
-          {/* Login/Logout Button */}
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.7, duration: 0.3 }}
-          >
-            {isAuthenticated ? (
-              <Link
-                to="/logout"
-                className="bg-[#8a4b27] px-4 sm:px-6 py-2 rounded-full shadow-md font-medium hover:bg-[#6e3a1f] transition-colors duration-300 text-sm sm:text-base flex items-center gap-2"
-              >
-                <span>LOGOUT</span>
-                <motion.svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  whileHover={{ x: 5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </motion.svg>
-              </Link>
-            ) : (
-              <Link
-                to="/login"
-                className="bg-[#8a4b27] px-4 sm:px-6 py-2 rounded-full shadow-md font-medium hover:bg-[#6e3a1f] transition-colors duration-300 text-sm sm:text-base flex items-center gap-2"
-              >
-                <span>LOGIN</span>
-                <motion.svg
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  whileHover={{ x: 5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </motion.svg>
-              </Link>
-            )}
-          </motion.div>
         </motion.div>
 
         {/* Mobile Menu Button */}
@@ -172,6 +133,7 @@ const Header = ({ cartItemCount, onCartClick, isAuthenticated = false }) => {
           transition={{ delay: 0.8, duration: 0.3 }}
           className="md:hidden text-2xl"
           whileHover={{ scale: 1.2, rotate: 10 }}
+          aria-label="Mobile menu"
         >
           ☰
         </motion.button>

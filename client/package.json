@@ -6,12 +6,20 @@
     "@google/model-viewer": "^4.1.0",
     "autoprefixer": "^10.4.14",
     "framer-motion": "^12.23.12",
+    "gsap": "^3.13.0",
+    "leaflet": "^1.9.4",
+    "lottie-react": "^2.4.1",
+    "ogl": "^1.0.11",
     "postcss": "^8.4.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",
-    "react-router-dom": "^7.7.1",
+    "react-leaflet": "^4.2.1",
+    "react-router-dom": "^7.8.0",
+    "react-scratchcard": "^1.1.2",
     "react-scripts": "5.0.1",
+    "react-slick": "^0.31.0",
+    "slick-carousel": "^1.8.1",
     "tailwindcss": "^3.3.2",
     "web-vitals": "^2.1.0"
   },
@@ -32,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-plugin-react-hooks": "^5.2.0"
   }
 }
